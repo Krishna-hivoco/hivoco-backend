@@ -1,8 +1,8 @@
 import sendmail from "../../helper/commonFunction.js";
 import Contact from "./model.js";
-const insertContactDetals = async (image, data) => {
+const insertContactDetals = async (data, image) => {
   const mailOptions = {
-    to: "krishna@hivoco.com",
+    to: "pritesh@hivoco.com",
     subject: "New Contact Form Submission from Hivoco Tech Studio",
     html: `<!DOCTYPE html>
 <html lang="en">
@@ -53,7 +53,7 @@ const insertContactDetals = async (image, data) => {
 
         <!-- Gradient Button -->
         <div style="text-align: center;">
-         <a href="https://hivoco.com/admin" 
+         <a href="https://hivoco.com" 
    style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #ffffff; text-decoration: none; background: linear-gradient(to right, #3b82f6, #ef4444); border-radius: 5px; text-align: center; font-weight: bold;">
    Go to Admin Dashboard
 </a>
@@ -79,7 +79,10 @@ const insertContactDetals = async (image, data) => {
   };
   if (image) {
     data = { ...data, image: image };
+  } else {
+    data = { ...data };
   }
+
   const insert = await new Contact(data).save();
   await sendmail(mailOptions);
   return insert;

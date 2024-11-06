@@ -16,9 +16,10 @@ router.post(
     if (req.file) {
       const { path } = req.file;
       const { secure_url } = await cloudinary.uploader.upload(path);
-      const result = await contactService.insertContactDetals(secure_url, data);
+      const result = await contactService.insertContactDetals(data, secure_url);
       res.send(result);
     } else {
+      
       const result = await contactService.insertContactDetals(data);
       res.send(result);
     }
