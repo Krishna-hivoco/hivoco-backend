@@ -51,7 +51,7 @@ const transporter = nodemailer.createTransport({
 
 export default async function sendmail(msg) {
   await transporter.sendMail({
-    from: '"Hivoco Tech Studio" <krishna@hivoco.com>', // sender address
+    from: '"Hivoco Tech Studio" <hi@hivoco.com>', // sender address
     to: msg.to,
     subject: msg.subject,
     html: msg.html,

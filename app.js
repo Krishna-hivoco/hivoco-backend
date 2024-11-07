@@ -19,7 +19,7 @@ export const createApp = () => {
   app.use(cookieParser());
 
   // app.use((req, res, next) => {
-  //   const allowedOrigins = ["http://localhost:3000"];
+  //   const allowedOrigins = ["http://localhost:8814"];
   //   const origin = req.headers.origin;
   //   if (allowedOrigins.includes(origin)) {
   //     res.setHeader("Access-Control-Allow-Origin", origin);
