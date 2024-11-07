@@ -12,7 +12,7 @@ router.post(
   imageUpload.single("img"),
   httpHandler(async (req, res) => {
     const data = req.body;
-    console.log("first", req.file);
+   
     if (req.file) {
       const { path } = req.file;
       const { secure_url } = await cloudinary.uploader.upload(path);
