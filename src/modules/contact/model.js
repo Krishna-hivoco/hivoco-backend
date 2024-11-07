@@ -25,6 +25,10 @@ const contactSchema = new mongoose.Schema(
     inquiry_description: {
       type: String,
     },
+    ternandcondition:{
+      type:Boolean,
+      default:false,
+    }
   },
   { timestamps: true }
 );
