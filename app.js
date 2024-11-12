@@ -8,9 +8,10 @@ import "./src/config/mongodb.js";
 import { v2 as cloudinary } from "cloudinary";
 
 import contactModule from "./src/modules/contact/index.js";
+import authModule from "./src/modules/auth/index.js";
 
 dotenv.config();
-const modules = [contactModule];
+const modules = [contactModule, authModule];
 
 export const createApp = () => {
   const app = express();

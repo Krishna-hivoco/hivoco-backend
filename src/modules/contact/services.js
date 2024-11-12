@@ -88,8 +88,14 @@ const insertContactDetals = async (data, image) => {
   return insert;
 };
 
+const getContactDetals = async () => {
+  const data = await Contact.find();
+  return data;
+};
+
 const contactService = {
   insertContactDetals,
+  getContactDetals,
 };
 
 export default contactService;

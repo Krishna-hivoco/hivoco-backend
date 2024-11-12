@@ -7,7 +7,7 @@ router.use("/contact", contactRouter);
 const contactModule = {
   init: (app) => {
     app.use(router);
-    console.log("Contact-Us module Loaded👤");
+    console.log("Contact-Us module Loaded");
   },
 };
 

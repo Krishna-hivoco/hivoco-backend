@@ -1,28 +1,47 @@
+import createError from "http-errors-lite";
+import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
 
 const auth = async (req, res, next) => {
   try {
     const authHeader = req.get("Authorization");
     if (!authHeader) {
-      return res.status(400).send({ error: "Not authenticated." });
+      return next(createError(StatusCodes.UNAUTHORIZED, "Not authenticated."));
     }
+
     const token = authHeader.split(" ")[1];
-
-    let decodedToken;
-    try {
-      decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (err) {
-      return res.status(403).send({ error: "Not authenticated." });
+    if (!token) {
+      return next(createError(StatusCodes.UNAUTHORIZED, "Token not provided."));
     }
-    const users = {
-      userId: decodedToken.auth_id,
-      role: decodedToken.role,
-    };
 
-    req.user = users;
+    // Verify the token
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      return next(
+        createError(StatusCodes.FORBIDDEN, "Invalid or expired token.")
+      );
+    }
+
+    req.user = decoded; // Store user data in request object
+
+    // Check if the user is an admin
+    if (req.user.role !== "admin") {
+      return next(
+        createError(StatusCodes.FORBIDDEN, "Access denied. Admins only.")
+      );
+    }
+
+    // If the user is an admin, proceed with the request
     next();
   } catch (err) {
-    return err;
+    next(
+      createError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "An unexpected error occurred."
+      )
+    );
   }
 };
 
