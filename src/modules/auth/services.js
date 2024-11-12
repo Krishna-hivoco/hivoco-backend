@@ -29,7 +29,7 @@ export const loginUser = async (email, password) => {
   const user = await authModel.findOne({ email });
   if (!user) throw createError(StatusCodes.NOT_FOUND, "User not found");
   const isPasswordValid = bcrypt.compareSync(password, user.password);
-  console.log("first", password, user.password, isPasswordValid);
+
 
   if (!isPasswordValid)
     throw createError(StatusCodes.UNAUTHORIZED, "Invalid credentials");

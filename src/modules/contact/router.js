@@ -28,7 +28,7 @@ router.get(
   "/getAll",
   authorization.auth,
   httpHandler(async (req, res) => {
-    console.log("hghj");
+  
     const result = await contactService.getContactDetals();
     res.send(result);
   })
