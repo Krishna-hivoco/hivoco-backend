@@ -13,7 +13,7 @@ const authschema = new Schema({
     type: String,
     required: true,
   },
-  isRole: {
+  role: {
     type: String,
     default: "user",
     enum: ["user", "admin"],
