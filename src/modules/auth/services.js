@@ -6,8 +6,8 @@ import { StatusCodes } from "http-status-codes"; // for using status codes
 import authModel from "./model.js"; // Assuming a User model
 
 const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRATION = "15m";
-const REFRESH_TOKEN_EXPIRATION = "1d";
+const JWT_EXPIRATION = "30m";
+const REFRESH_TOKEN_EXPIRATION = "5d";
 
 // Register user (optional if needed)
 

@@ -19,20 +19,20 @@ export const createApp = () => {
   app.use(bodyParser.json());
   app.use(cookieParser());
 
-  // app.use((req, res, next) => {
-  //   const allowedOrigins = ["http://localhost:8814"];
-  //   const origin = req.headers.origin;
-  //   if (allowedOrigins.includes(origin)) {
-  //     res.setHeader("Access-Control-Allow-Origin", origin);
-  //   }
-  //   res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-  //   res.header(
-  //     "Access-Control-Allow-Headers",
-  //     "Content-Type, Authorization, sentry-trace, baggage"
-  //   );
-  //   res.header("Access-Control-Allow-Credentials", true);
-  //   return next();
-  // });
+  app.use((req, res, next) => {
+    const allowedOrigins = ["http://localhost:5173"];
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+      res.setHeader("Access-Control-Allow-Origin", origin);
+    }
+    res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization, sentry-trace, baggage"
+    );
+    res.header("Access-Control-Allow-Credentials", true);
+    return next();
+  });
 
   cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
