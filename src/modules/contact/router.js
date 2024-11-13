@@ -28,8 +28,9 @@ router.get(
   "/getAll",
   authorization.auth,
   httpHandler(async (req, res) => {
-  
-    const result = await contactService.getContactDetals();
+     const page = parseInt(req.query.page) || 1;
+     const limit = parseInt(req.query.limit) || 10;
+    const result = await contactService.getContactDetals(limit, page);
     res.send(result);
   })
 );

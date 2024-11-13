@@ -30,7 +30,6 @@ export const loginUser = async (email, password) => {
   if (!user) throw createError(StatusCodes.NOT_FOUND, "User not found");
   const isPasswordValid = bcrypt.compareSync(password, user.password);
 
-
   if (!isPasswordValid)
     throw createError(StatusCodes.UNAUTHORIZED, "Invalid credentials");
 

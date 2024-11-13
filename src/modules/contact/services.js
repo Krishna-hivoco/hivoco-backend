@@ -88,9 +88,12 @@ const insertContactDetals = async (data, image) => {
   return insert;
 };
 
-const getContactDetals = async () => {
-  const data = await Contact.find();
-  return data;
+const getContactDetals = async (limit, page) => {
+  const count = await Contact.countDocuments();
+  const data = await Contact.find()
+    .skip((page - 1) * limit)
+    .limit(limit);
+  return { count, data };
 };
 
 const contactService = {
