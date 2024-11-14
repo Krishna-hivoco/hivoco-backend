@@ -53,7 +53,7 @@ const insertContactDetals = async (data, image) => {
 
         <!-- Gradient Button -->
         <div style="text-align: center;">
-         <a href="https://hivoco.com" 
+         <a href="https://api.hivoco.com" 
    style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #ffffff; text-decoration: none; background: linear-gradient(to right, #3b82f6, #ef4444); border-radius: 5px; text-align: center; font-weight: bold;">
    Go to Admin Dashboard
 </a>
