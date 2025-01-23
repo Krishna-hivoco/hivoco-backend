@@ -9,9 +9,10 @@ import { v2 as cloudinary } from "cloudinary";
 
 import contactModule from "./src/modules/contact/index.js";
 import authModule from "./src/modules/auth/index.js";
+import policyModule from "./src/modules/policy/index.js";
 
 dotenv.config();
-const modules = [contactModule, authModule];
+const modules = [contactModule, authModule, policyModule];
 
 export const createApp = () => {
   const app = express();
