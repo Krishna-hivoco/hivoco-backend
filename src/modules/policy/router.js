@@ -15,12 +15,39 @@ router.post("/add-policy",
     res.send(result);
   })
 );
+
 router.put("/update-policy/:auth_id",
 
   httpHandler(async (req, res) => {
     const { auth_id } = req.params;
     const policyData = req.body;
     const result = await policyService.updatePolicy(auth_id, policyData);
+    res.send(result);
+  })
+);
+router.put("/update-policy/:auth_id",
+
+  httpHandler(async (req, res) => {
+    const { auth_id } = req.params;
+    const policyData = req.body;
+    const result = await policyService.updatePolicy(auth_id, policyData);
+    res.send(result);
+  })
+);
+router.get("/get-list-of-employee",
+  authorization.auth,
+  httpHandler(async (req, res) => {
+    const user  = req.user
+    const result = await policyService.listOfEmployee(user);
+    res.send(result);
+  })
+);
+router.get("/get-info-of-employee/:auth_id",
+  authorization.auth,
+  httpHandler(async (req, res) => {
+    const user  = req.user
+    const {auth_id} = req.params
+    const result = await policyService.infoOfEmployee(user, auth_id);
     res.send(result);
   })
 );

@@ -99,6 +99,6 @@ export const loginEmployee = async (email, password) => {
   const refreshToken = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, {
     expiresIn: REFRESH_TOKEN_EXPIRATION,
   });
-
-  return { accessToken, refreshToken };
+ 
+  return {user, accessToken, refreshToken };
 };

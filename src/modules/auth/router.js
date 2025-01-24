@@ -63,8 +63,8 @@ router.post("/register-employee", authorization.auth, async (req, res, next) => 
 router.post("/login-employee", async (req, res, next) => {
  try {
    const { email, password } = req.body;
-   const { accessToken, refreshToken } = await loginEmployee(email, password);
-   res.status(StatusCodes.OK).json({ accessToken, refreshToken });
+   const result = await loginEmployee(email, password);
+   res.status(StatusCodes.OK).json(result );
  } catch (error) {
    next(error);
  }

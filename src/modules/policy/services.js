@@ -1,3 +1,4 @@
+import authModel from "../auth/model.js";
 import PolicyModel from "./model.js";
 
 
@@ -37,9 +38,32 @@ const updatePolicy = async (auth_id, policyData) => {
   };
 };
 
+const listOfEmployee = async (user) => {
+  if (user.role !== "admin") {
+    throw createError(
+      StatusCodes.UNAUTHORIZED,
+      "Only admin can access employee list"
+    );
+  }
+  const users = await authModel.find({ role: "employee" }, "-password");
+  return users;
+};
+const infoOfEmployee = async (user, auth_id) => {
+  if (user.role !== "admin") {
+    throw createError(
+      StatusCodes.UNAUTHORIZED,
+      "Only admin can access info of  an employee"
+    );
+  }
+  const info = await PolicyModel.findOne({auth_id});
+  return info;
+};
+
 const policyService = {
- addPolicy,
- updatePolicy
+  addPolicy,
+  updatePolicy,
+  listOfEmployee,
+  infoOfEmployee,
 };
 
 export default policyService;
