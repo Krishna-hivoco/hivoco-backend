@@ -106,9 +106,7 @@ const updatePolicy = async (auth_id, policyData) => {
             </blockquote>
             <p>If you have any questions or require further clarification, please do not hesitate to reach out.</p>
             <p>We appreciate your cooperation and adherence to these guidelines, which are essential in maintaining a productive and compliant workplace.</p>
-            <p>Best Regards,<br>${authData.name}<br>HiVoco Tech Studios<br>${
-       authData.email
-     }</p>
+            <p>Best Regards,<br>Krishna Murari Yadav<br>HiVoco Tech Studios<br>krishna@hivoco.com</p>
         </div>
         <div class="footer">
             <p>© ${new Date().getFullYear()} HiVoco Tech Studios. All rights reserved.</p>
