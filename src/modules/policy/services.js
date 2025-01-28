@@ -1,6 +1,8 @@
 import authModel from "../auth/model.js";
 import PolicyModel from "./model.js";
 import sendEmail from "../../helper/sendEmail.js"
+import createError from "http-errors-lite";
+import { StatusCodes } from "http-status-codes";
 
 
 const addPolicy = async (auth_id, policies) => {
@@ -136,14 +138,26 @@ const listOfEmployee = async (user) => {
   return users;
 };
 const infoOfEmployee = async (user, auth_id) => {
-  if (user.role !== "admin") {
-    throw createError(
-      StatusCodes.UNAUTHORIZED,
-      "Only admin can access info of  an employee"
-    );
+//  console.log("user",user)
+  if (user.role === "admin" ) {
+     const info = await PolicyModel.findOne({ auth_id });
+      return info;
   }
-  const info = await PolicyModel.findOne({auth_id});
-  return info;
+  if (user.role === "employee" ) {
+    if (user.id !== auth_id) {
+      throw createError(
+        StatusCodes.UNAUTHORIZED,
+        "You are unauthorized person"
+      );
+    }
+     const info = await PolicyModel.findOne({ auth_id });
+      return info;
+  }
+  else{
+     throw createError(StatusCodes.UNAUTHORIZED, "You are unauthorized person");
+  }
+ 
+ 
 };
 
 const policyService = {

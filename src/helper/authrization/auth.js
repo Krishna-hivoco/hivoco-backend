@@ -27,11 +27,11 @@ const auth = async (req, res, next) => {
     req.user = decoded; // Store user data in request object
 
     // Check if the user is an admin
-    if (req.user.role !== "admin") {
-      return next(
-        createError(StatusCodes.FORBIDDEN, "Access denied. Admins only.")
-      );
-    }
+    // if (req.user.role !== "admin") {
+    //   return next(
+    //     createError(StatusCodes.FORBIDDEN, "Access denied. Admins only.")
+    //   );
+    // }
 
     // If the user is an admin, proceed with the request
     next();

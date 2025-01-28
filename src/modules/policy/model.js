@@ -6,7 +6,7 @@ const policySchema = new Schema(
     auth_id: { type: Schema.Types.ObjectId, ref: "Auth", required: true }, // Replace 'User' with the name of your referenced model
     policies: [
       {
-        policyName: { type: String, required: true }, // Define the structure of the object
+        policyName: { type: String, required: true,trim:true }, // Define the structure of the object
         checked:{type:Boolean, default: false}
       },
     ],
