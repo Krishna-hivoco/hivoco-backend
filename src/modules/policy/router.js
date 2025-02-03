@@ -51,5 +51,13 @@ router.get("/get-info-of-employee/:auth_id",
     res.send(result);
   })
 );
+router.post("/ischecked",
+
+  httpHandler(async (req, res) => {
+    const { auth_id, policyName } = req.body;
+    const result = await policyService.isPolicyChecked(auth_id, policyName);
+    res.send(result);
+  })
+);
 
 export default router;

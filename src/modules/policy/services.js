@@ -1,14 +1,14 @@
 import authModel from "../auth/model.js";
 import PolicyModel from "./model.js";
-import sendEmail from "../../helper/sendEmail.js"
+import sendEmail from "../../helper/sendEmail.js";
 import createError from "http-errors-lite";
 import { StatusCodes } from "http-status-codes";
-
+import mongoose from "mongoose";
 
 const addPolicy = async (auth_id, policies) => {
   const policy = await new PolicyModel({ auth_id, policies }).save();
 
-  return policy ;
+  return policy;
 };
 
 const updatePolicy = async (auth_id, policyData) => {
@@ -36,10 +36,10 @@ const updatePolicy = async (auth_id, policyData) => {
   policyDoc.policies.push({ policyName, checked });
   await policyDoc.save();
 
-   const msg = {
-     to: authData.email,
-     subject: "Confirmation of Acceptance of Company Policies",
-     html: `<!DOCTYPE html>
+  const msg = {
+    to: authData.email,
+    subject: "Confirmation of Acceptance of Company Policies",
+    html: `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -117,9 +117,9 @@ const updatePolicy = async (auth_id, policyData) => {
 </body>
 </html>
 `,
-   };
+  };
 
-   await sendEmail(msg)
+  await sendEmail(msg);
 
   return {
     message: "Policy added successfully.",
@@ -134,37 +134,75 @@ const listOfEmployee = async (user) => {
       "Only admin can access employee list"
     );
   }
-  const users = await authModel.find({ role: "employee" }, "-password");
-  return users;
+
+  const users = await PolicyModel.find().populate("auth_id", "-password"); // Exclude password
+
+  // Count policies for each employee
+  const employeeList = users.map((employee) => ({
+    ...employee.toObject(), // Convert Mongoose document to a plain object
+    policiesCount: employee.policies ? employee.policies.length : 0, // Assuming 'policies' is an array field
+  }));
+
+  return employeeList;
 };
+
 const infoOfEmployee = async (user, auth_id) => {
-//  console.log("user",user)
-  if (user.role === "admin" ) {
-     const info = await PolicyModel.findOne({ auth_id });
-      return info;
+  //  console.log("user",user)
+  if (user.role === "admin") {
+    const info = await PolicyModel.findOne({ auth_id });
+    return info;
   }
-  if (user.role === "employee" ) {
+  if (user.role === "employee") {
     if (user.id !== auth_id) {
       throw createError(
         StatusCodes.UNAUTHORIZED,
         "You are unauthorized person"
       );
     }
-     const info = await PolicyModel.findOne({ auth_id });
-      return info;
+    const info = await PolicyModel.findOne({ auth_id });
+    return info;
+  } else {
+    throw createError(StatusCodes.UNAUTHORIZED, "You are unauthorized person");
   }
-  else{
-     throw createError(StatusCodes.UNAUTHORIZED, "You are unauthorized person");
-  }
- 
- 
 };
+
+const isPolicyChecked = async (auth_id, policyName) => {
+  if (!policyName) {
+    throw createError(StatusCodes.BAD_REQUEST, "Policy name is required");
+  }
+
+  const normalizedPolicyName = policyName.trim().toLowerCase();
+
+  // Validate auth_id before converting it
+  if (!mongoose.isValidObjectId(auth_id)) {
+    throw createError(StatusCodes.BAD_REQUEST, "Invalid auth_id format");
+  }
+
+  // Use auth_id directly as a string instead of converting to ObjectId manually
+  const userPolicy = await PolicyModel.findOne({ auth_id });
+
+  console.log("userPolicy", userPolicy);
+
+  if (!userPolicy || !Array.isArray(userPolicy.policies)) {
+    throw createError(StatusCodes.NOT_FOUND, "User's policy data not found");
+  }
+
+  // Find the matching policy after normalizing
+  const foundPolicy = userPolicy.policies.find(
+    (p) => p.policyName?.trim().toLowerCase() === normalizedPolicyName
+  );
+
+  return foundPolicy ? Boolean(foundPolicy.checked) : false;
+};
+
+
 
 const policyService = {
   addPolicy,
   updatePolicy,
   listOfEmployee,
   infoOfEmployee,
+  isPolicyChecked,
 };
 
 export default policyService;
